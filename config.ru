@@ -2,7 +2,7 @@ require 'rubygems'
 require 'bundler'
 Bundler.require(:default)
 
-Dir[File.expand_path('../app/**/*.rb', __FILE__)].each { |file| require file }
+Dir[File.expand_path('../app/**/*.rb', __FILE__)].sort!.each { |file| require file }
 
 env = ENV['ENV'] || 'development'
 db_dir = File.expand_path('../db', __FILE__)
