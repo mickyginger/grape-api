@@ -6,6 +6,7 @@ module API
       end
 
       post do
+        status 201
         Boat.create! params
       end
 
