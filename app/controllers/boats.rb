@@ -6,6 +6,8 @@ module API
       end
 
       post do
+        validate_token
+        p @current_user
         status 201
         Boat.create! params
       end
@@ -15,13 +17,26 @@ module API
       end
 
       put ':id' do
+        validate_token
         Boat.update! params[:id], params
       end
 
       delete ':id' do
+        validate_token
         Boat.destroy params[:id]
         status 204
         ''
+      end
+
+      post ':id/comments' do
+        boat = Boat.find(params[:id])
+        boat.comments.create! params
+        boat.as_json include: :comments
+      end
+
+      delete ':id/comments/:comment_id' do
+        Comment.destroy params[:comment_id]
+        Boat.find(params[:id]).as_json include: :comments
       end
     end
   end
