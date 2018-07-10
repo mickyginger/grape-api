@@ -1,7 +1,6 @@
 module API
   class Base < Grape::API
     format :json
-    prefix :api
 
     rescue_from ActiveRecord::RecordNotFound do |e|
       error!({ message: 'Not Found' }, 404)
@@ -41,7 +40,10 @@ end
 
 
 Application = Rack::Builder.new do
-  map "/" do
+  use Rack::Static, urls: ["!/api"], root: 'public', index: 'index.html'
+
+  map "/api" do
     run API::Base
   end
+
 end
