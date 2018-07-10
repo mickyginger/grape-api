@@ -23,7 +23,7 @@ module API
       def validate_token
         begin
           token = headers['Authorization'].split[-1]
-          payload = JWT.decode(token, SECRET)[0]
+          payload = JWT.decode(token, 'ssh')[0]
           @current_user = User.find(payload['sub'])
         rescue => e
           p e
@@ -32,7 +32,7 @@ module API
       end
     end
 
-    mount API::BoatsController
+    mount API::CriminalsController
     mount API::AuthController
 
   end
