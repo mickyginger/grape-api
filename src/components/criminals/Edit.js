@@ -8,16 +8,20 @@ class CriminalsEdit extends React.Component {
 
   state = {
     selectedOptions: [],
-    errors: {}
+    errors: {},
+    criminal: {}
   };
 
   handleChange = ({ target: { name, value }}) => {
-    this.setState({ [name]: value });
+    const criminal = { ...this.state.criminal, [name]: value };
+    const errors = { ...this.state.errors, [name]: '' };
+    this.setState({ criminal, errors });
   }
 
   handleSelectChange = selectedOptions => {
-    const knownAssociates = selectedOptions.map(option => option.value);
-    this.setState({ selectedOptions, knownAssociates }, () => console.log(this.state));
+    const associateIds = selectedOptions.map(option => option.value);
+    const criminal = { ...this.state.criminal, associate_ids: associateIds };
+    this.setState({ selectedOptions, criminal });
   }
 
   componentDidMount() {
@@ -34,13 +38,14 @@ class CriminalsEdit extends React.Component {
         });
 
 
-        this.setState({ options, selectedOptions, ...criminal });
+        this.setState({ options, selectedOptions, criminal }, () => console.log(this.state));
       });
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    axios.put(`/api/criminals/${this.props.match.params.id}`, this.state, {
+
+    axios.put(`/api/criminals/${this.props.match.params.id}`, this.state.criminal, {
       headers: { Authorization: `Bearer ${Auth.getToken()}` }
     })
       .then(() => this.props.history.push('/criminals'));
@@ -52,7 +57,10 @@ class CriminalsEdit extends React.Component {
         handleSelectChange={this.handleSelectChange}
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
-        data={this.state}
+        options={this.state.options}
+        selectedOptions={this.state.selectedOptions}
+        data={this.state.criminal}
+        errors={this.state.errors}
       />
     );
   }

@@ -1,18 +1,18 @@
 import React from 'react';
 import Select from 'react-select';
 
-const CriminalsForm = ({ handleSelectChange, handleChange, handleSubmit, data }) => {
+const CriminalsForm = ({ handleSelectChange, handleChange, handleSubmit, data, errors, options, selectedOptions }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="field">
         <label className="label">Name</label>
         <input className="input" name="name" placeholder="Name" onChange={handleChange} value={data.name || ''}/>
-        {data.errors.name && <small>{data.errors.name}</small>}
+        {errors.name && <small>{errors.name}</small>}
       </div>
       <div className="field">
         <label className="label">Date of Birth</label>
         <input className="input" type="date" name="dob" placeholder="Date of Birth" onChange={handleChange} value={data.dob || ''} />
-        {data.errors.dob && <small>{data.errors.dob}</small>}
+        {errors.dob && <small>{errors.dob}</small>}
       </div>
       <div className="field">
         <label className="label">Status</label>
@@ -26,12 +26,12 @@ const CriminalsForm = ({ handleSelectChange, handleChange, handleSubmit, data })
             </select>
           </div>
         </div>
-        {data.errors.status && <small>{data.errors.status}</small>}
+        {errors.status && <small>{errors.status}</small>}
       </div>
       <div className="field">
         <label className="label">Image</label>
         <input className="input" name="image" placeholder="Image" onChange={handleChange} value={data.image || ''}/>
-        {data.errors.image && <small>{data.errors.image}</small>}
+        {errors.image && <small>{errors.image}</small>}
       </div>
 
       <div className="field">
@@ -39,9 +39,9 @@ const CriminalsForm = ({ handleSelectChange, handleChange, handleSubmit, data })
         <Select
           multi
           name="crimes"
-          value={data.selectedOptions}
+          value={selectedOptions}
           onChange={handleSelectChange}
-          options={data.options}
+          options={options}
         />
       </div>
 

@@ -7,8 +7,10 @@ import CriminalsForm from './Form';
 class CriminalsNew extends React.Component {
 
   state = {
+    options: [],
     selectedOptions: [],
-    errors: {}
+    errors: {},
+    criminal: {}
   };
 
   componentDidMount() {
@@ -23,7 +25,8 @@ class CriminalsNew extends React.Component {
   }
 
   handleChange = ({ target: { name, value }}) => {
-    this.setState({ [name]: value });
+    const criminal = { ...this.state.criminal, [name]: value };
+    this.setState({ criminal });
   }
 
   handleSelectChange = selectedOptions => {
@@ -33,7 +36,7 @@ class CriminalsNew extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    axios('/api/criminals', this.state, {
+    axios.post('/api/criminals', this.state.criminal, {
       headers: { Authorization: `Bearer ${Auth.getToken()}` }
     })
       .then(() => this.props.history.push('/criminals'))
@@ -46,7 +49,10 @@ class CriminalsNew extends React.Component {
         handleSelectChange={this.handleSelectChange}
         handleChange={this.handleChange}
         handleSubmit={this.handleSubmit}
-        data={this.state}
+        options={this.state.options}
+        selectedOptions={this.state.selectedOptions}
+        data={this.state.criminal}
+        errors={this.state.errors}
       />
     );
   }

@@ -7,10 +7,12 @@ module API
     end
 
     rescue_from ActiveRecord::RecordInvalid do |e|
+      p e
       error!({ message: 'Validation failed', errors: e.record.errors.as_json }, 422)
     end
 
     rescue_from ActiveModel::UnknownAttributeError do |e|
+      p e
       error!({ message: 'Bad request' }, 400)
     end
 
@@ -30,10 +32,14 @@ module API
           error!({ message: 'Unauthorized' }, 401)
         end
       end
+
+      def permitted_params
+        @permitted_params ||= declared(params, include_missing: false)
+      end
     end
 
-    mount API::CriminalsController
-    mount API::AuthController
+    mount CriminalsController
+    mount AuthController
 
   end
 end

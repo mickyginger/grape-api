@@ -41,8 +41,8 @@ reggie = Criminal.create!({
   user: user1
 })
 
-criminal2.associates = [ronnie]
-criminal3.associates = [reggie]
+reggie.associates = [ronnie]
+ronnie.associates = [reggie]
 
-criminal2.save!
-criminal3.save!
+reggie.save!
+ronnie.save!
